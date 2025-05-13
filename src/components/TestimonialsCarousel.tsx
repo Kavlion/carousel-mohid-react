@@ -1,4 +1,8 @@
 
+import React, { 
+  useState, 
+  useEffect 
+} from "react";
 import { 
   Carousel,
   CarouselContent,
@@ -8,7 +12,6 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { useState } from "react";
 
 const testimonials = [
   {
@@ -51,7 +54,7 @@ const TestimonialsCarousel = () => {
   const [api, setApi] = useState<any>(null);
 
   // Set up effect to update activeIndex when the carousel slides
-  React.useEffect(() => {
+  useEffect(() => {
     if (!api) return;
 
     const onSelect = () => {
