@@ -1,8 +1,15 @@
 
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import SearchBar from "./SearchBar";
+import { toast } from "sonner";
 
 const Hero = () => {
+  const handleSearch = (query: string) => {
+    toast.info(`Searching for: ${query}`);
+    // In a real app, this would trigger a search operation
+  };
+
   return (
     <section id="home" className="relative">
       <div className="bg-black text-white">
@@ -15,14 +22,20 @@ const Hero = () => {
                 Watches
               </h1>
               <p className="text-gray-300 text-lg mb-8 max-w-lg">
-                Find your perfect watch with cutting edge technology, top brands in one place. Track your health, fitness and stay connected on the go.
+                Find the best, reliable, and cheap smart watches here.
+                We focus on product quality. Here you can find smart
+                watches of almost all brands. So why you are waiting?
+                Just order now!
               </p>
+              <div className="max-w-md w-full mb-6">
+                <SearchBar onSearch={handleSearch} />
+              </div>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center md:justify-start">
                 <Button className="bg-white text-black hover:bg-gray-200 px-8 py-6 text-lg h-auto rounded-full">
                   Explore More
                 </Button>
                 <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black px-8 py-6 text-lg h-auto rounded-full">
-                  Search
+                  Shop Now
                 </Button>
               </div>
             </div>
