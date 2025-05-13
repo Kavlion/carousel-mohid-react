@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useState } from "react";
 
 const testimonials = [
   {
@@ -37,25 +38,32 @@ const testimonials = [
 ];
 
 const TestimonialsCarousel = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleSlideChange = (index: number) => {
+    setActiveIndex(index);
+  };
+
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12">What People Say About Us</h2>
         
         <Carousel
           opts={{
-            align: "center",
+            align: "start",
             loop: true,
           }}
           className="w-full"
+          onSelect={(index) => handleSlideChange(index)}
         >
           <CarouselContent>
-            {testimonials.map((testimonial) => (
+            {testimonials.map((testimonial, index) => (
               <CarouselItem key={testimonial.id} className="md:basis-1/2 lg:basis-1/3 pl-4">
-                <Card className="border-none shadow-sm">
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                      <div className="w-16 h-16 mr-4">
+                <Card className="bg-white border-none shadow-md rounded-2xl overflow-hidden">
+                  <CardContent className="p-8">
+                    <div className="flex items-center mb-6">
+                      <div className="w-14 h-14 mr-4">
                         <AspectRatio ratio={1} className="rounded-full overflow-hidden">
                           <img 
                             src={testimonial.image} 
@@ -69,14 +77,14 @@ const TestimonialsCarousel = () => {
                         <p className="text-gray-500 text-sm">{testimonial.role}</p>
                       </div>
                     </div>
-                    <p className="text-gray-700 mb-4">{testimonial.text}</p>
-                    <div className="flex">
+                    <div className="flex mb-4">
                       {Array(5).fill(0).map((_, i) => (
-                        <svg key={i} className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                        <svg key={i} className={`w-5 h-5 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                         </svg>
                       ))}
                     </div>
+                    <p className="text-gray-700">{testimonial.text}</p>
                   </CardContent>
                 </Card>
               </CarouselItem>
@@ -85,9 +93,17 @@ const TestimonialsCarousel = () => {
           <div className="flex justify-center mt-6">
             <div className="flex space-x-2">
               {testimonials.map((_, index) => (
-                <div key={index} className={`w-2 h-2 rounded-full ${index === 0 ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
+                <div 
+                  key={index} 
+                  className={`w-2.5 h-2.5 rounded-full cursor-pointer ${index === activeIndex ? 'bg-blue-600' : 'bg-gray-300'}`}
+                  onClick={() => handleSlideChange(index)}
+                />
               ))}
             </div>
+          </div>
+          <div className="hidden">
+            <CarouselPrevious />
+            <CarouselNext />
           </div>
         </Carousel>
       </div>
