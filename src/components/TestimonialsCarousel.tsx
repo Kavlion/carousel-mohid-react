@@ -40,9 +40,33 @@ const testimonials = [
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleSlideChange = (index: number) => {
-    setActiveIndex(index);
+  // Fix: Updated the handleSlideChange function to accept React's SyntheticEvent and extract the emblaApi
+  const handleSlideChange = (event: React.SyntheticEvent<HTMLDivElement, Event>) => {
+    // We need to access the embla API to get the current index
+    // But since the event doesn't directly provide it, we'll use the state update in the onSelect callback
+    // of the Carousel component via the setApi prop
   };
+
+  // Create a state for the Carousel API
+  const [api, setApi] = useState<any>(null);
+
+  // Set up effect to update activeIndex when the carousel slides
+  React.useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setActiveIndex(api.selectedScrollSnap());
+    };
+    
+    api.on("select", onSelect);
+    
+    // Initial call to set the active index
+    onSelect();
+    
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   return (
     <section className="py-16 bg-white">
@@ -55,7 +79,7 @@ const TestimonialsCarousel = () => {
             loop: true,
           }}
           className="w-full"
-          onSelect={handleSlideChange}
+          setApi={setApi}
         >
           <CarouselContent>
             {testimonials.map((testimonial, index) => (
@@ -96,7 +120,7 @@ const TestimonialsCarousel = () => {
                 <div 
                   key={index} 
                   className={`w-2.5 h-2.5 rounded-full cursor-pointer ${index === activeIndex ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  onClick={() => handleSlideChange(index)}
+                  onClick={() => api?.scrollTo(index)}
                 />
               ))}
             </div>
