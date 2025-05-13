@@ -55,7 +55,7 @@ const TestimonialsCarousel = () => {
             loop: true,
           }}
           className="w-full"
-          onSelect={(index) => handleSlideChange(index)}
+          onSelect={handleSlideChange}
         >
           <CarouselContent>
             {testimonials.map((testimonial, index) => (
